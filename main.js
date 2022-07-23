@@ -1,8 +1,12 @@
 let slideNumber = 0;
 let numberSlide = 1
-axios.get('https://rickandmortyapi.com/api/character')
+let album = []
+let albumLength
+  axios.get('https://rickandmortyapi.com/api/character')
     .then(function (response) {
-        renderSlide(response.data.results);
+        album = response.data.results
+        albumLength = album.length
+        renderSlide(album)
     });
 
 const slide = document.querySelector('.img');
@@ -14,7 +18,7 @@ rightBtn.addEventListener('click', next);
 
 function renderSlide(response) {
     slide.src = response[slideNumber].image
-    number.innerHTML = numberSlide + ' / 20'
+    number.innerHTML = numberSlide + ' / ' + albumLength
     
 };
 
@@ -24,38 +28,26 @@ function prev() {
         slideNumber--;
         numberSlide--;
         console.log(slideNumber)
-        axios.get('https://rickandmortyapi.com/api/character')
-            .then(function (response) {
-                renderSlide(response.data.results);
-            });
+        renderSlide(album)
     } else {
-        slideNumber = 19
-        numberSlide = 20
+        slideNumber = albumLength - 1
+        numberSlide = albumLength
         console.log(slideNumber)
-        axios.get('https://rickandmortyapi.com/api/character')
-            .then(function (response) {
-                renderSlide(response.data.results);
-            });
+        renderSlide(album)
     }
 };
 
 function next() {
-    if ((slideNumber < 19) && (numberSlide < 20)) {
+    if ((slideNumber < albumLength) && (numberSlide < albumLength)) {
         slideNumber++;
         numberSlide++;
         console.log(slideNumber)
-        axios.get('https://rickandmortyapi.com/api/character')
-            .then(function (response) {
-                renderSlide(response.data.results);
-            });
+        renderSlide(album)
     } else {
         slideNumber = 0
         numberSlide = 1
         console.log(slideNumber)
-        axios.get('https://rickandmortyapi.com/api/character')
-            .then(function (response) {
-                renderSlide(response.data.results);
-            });
+        renderSlide(album)
     }
 };
 
